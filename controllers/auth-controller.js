@@ -21,9 +21,12 @@ export const register = async (req, res, next) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({ ...req.body, password: hashPassword });
+
     res.status(201).json({
-      email: newUser.email,
-      subscription: newUser.subscription,
+      user: {
+        email: newUser.email,
+        subscription: newUser.subscription,
+      },
     });
   } catch (error) {
     next(error);
@@ -49,7 +52,13 @@ export const login = async (req, res, next) => {
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '23h' });
     await User.findByIdAndUpdate(user._id, { token });
 
-    res.status(200).json({ token });
+    res.status(200).json({
+      token,
+      user: {
+        email: user.email,
+        subscription: user.subscription,
+      },
+    });
   } catch (error) {
     next(error);
   }
