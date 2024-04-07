@@ -10,6 +10,7 @@ import {
 import validateBody from '../helpers/validateBody.js';
 import isEmptyBody from '../middlewares/isEmptyBody.js';
 import isValidId from '../middlewares/isValidId.js';
+import authenticate from '../middlewares/authenticate.js';
 
 import {
   contactFavoriteSchema,
@@ -18,6 +19,8 @@ import {
 } from '../models/Contact.js';
 
 const contactsRouter = express.Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get('/', getAllContacts);
 
