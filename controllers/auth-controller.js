@@ -113,6 +113,9 @@ export const updateSubscription = async (req, res, next) => {
 export const updateAvatar = async (req, res, next) => {
   try {
     const { _id } = req.user;
+
+    if (req.file === undefined) throw HttpError(404, 'Image was not found');
+
     const { path: oldPath, filename } = req.file;
     const newPath = path.join(avatarsPath, filename);
 
